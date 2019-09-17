@@ -20,7 +20,7 @@ async def on_ready():  # method expected by client. This runs once when connecte
 @client.event
 async def on_message(message):  # event that happens per any message.
     if str(message.author) != str(client.user):
-        await message.channel.send('Ναι!')
+        await message.channel.send('Ναι! v2')
 
 
 client.run(token)
