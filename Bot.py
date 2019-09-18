@@ -9,7 +9,6 @@
 import discord
 import requests
 import time
-import asyncio
 from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import Popularity
 import bs4 as bs

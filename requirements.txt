@@ -1,2 +1,4 @@
 discord==1.0.1
 discord.py==1.2.3
+requests==2.22.0
+bs4==4.8.0
