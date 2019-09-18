@@ -26,18 +26,14 @@ newsMessage = 'Holly Shit! \nΝέα Ανακοίνωση στο εξτρα φο�
 @client.event
 async def on_ready():  # method expected by client. This runs once when connected
     print(f'We have logged in as {client.user}')  # notification of login.
-    monitor_webpage()
-
-
-async def sendMessage():
-    messageToSend = newsMessage + newLast
-    await client.send_message()
 
 
 async def monitor_webpage():
     #Generate fake user agent so we dont get banned
     userAgent = UserAgent(100, Popularity.POPULAR.value)
     global curLast
+
+    await client.wait_until_ready()
 
     #Check every hour or so
     while(True):
@@ -59,9 +55,10 @@ async def monitor_webpage():
 
         #Are new and cur news titles different?
         if curLast != newLast:
-            sendMessage()
+            messageToSend = newsMessage + newLast
+            await client.send_message(messageToSend)
             curLast = newLast
         time.sleep(sleepTime)
 
-
+client.loop.create_task(monitor_webpage())
 client.run(token)
