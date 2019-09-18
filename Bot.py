@@ -20,7 +20,7 @@ url = 'http://www.phys.uoa.gr/grammateia.html'
 sleepTime = 3600
 curLast = 'Super Anakoinvsara!!!!!!! Simantiki deite tin OLOIIIIIIIIIII!!! WOW MUCH NEWS!'
 
-newsMessage = 'Holly Shit! \nΝέα Ανακοίνωση στο εξτρα φοβερό ιστότοπο της εξτρα φοβερής σχολής μας. \nΚαι σας ακούω να ρωτάτε: Ποιό είναι το θέμα της; Ε ΠΑΡΤΟ:\n'
+newsMessage = '>>> **!!Holly Shit!!** \nΝέα Ανακοίνωση στο εξτρα φοβερό ιστότοπο της εξτρα φοβερής σχολής μας. \nΚαι σας ακούω να ρωτάτε: *Ποιό είναι το θέμα της;* Ε ΠΑΡΤΟ:\n\n'
 
 
 @client.event
@@ -51,13 +51,14 @@ async def monitor_webpage():
             if item != None:
                 if item[0] == 'news-list-item':
                     newLast = c.find('a').get('title')
+                    # Are new and cur news titles different?
+                    if curLast != newLast:
+                        link = 'http://www.phys.uoa.gr/' + c.find('a').get('href')
+                        messageToSend = f'{newsMessage}*{newLast}* \n{link}'
+                        await client.get_channel(622867078839402525).send(messageToSend)
+                        curLast = newLast
                     break
 
-        #Are new and cur news titles different?
-        if curLast != newLast:
-            messageToSend = newsMessage + newLast
-            await client.get_channel(622867078839402525).send(messageToSend)
-            curLast = newLast
         time.sleep(sleepTime)
 
 client.loop.create_task(monitor_webpage())
