@@ -12,6 +12,7 @@ import time
 from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import Popularity
 import bs4 as bs
+import lxml
 
 token = 'NjIzNTQyNDA1MjgyMzk4MjA4.XYD9SQ.piOfXayZS1qyjyO96Ir2XyTA4v8'
 client = discord.Client()  # starts the discord client.
