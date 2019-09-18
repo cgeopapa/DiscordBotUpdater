@@ -7,20 +7,61 @@
 #   site: http://www.phys.uoa.gr/grammateia.html
 
 import discord
+import requests
+import time
+import asyncio
+from random_user_agent.user_agent import UserAgent
+from random_user_agent.params import Popularity
+import bs4 as bs
 
 token = 'NjIzNTQyNDA1MjgyMzk4MjA4.XYD9SQ.piOfXayZS1qyjyO96Ir2XyTA4v8'
 client = discord.Client()  # starts the discord client.
+url = 'http://www.phys.uoa.gr/grammateia.html'
+sleepTime = 3600
+curLast = 'Super Anakoinvsara!!!!!!! Simantiki deite tin OLOIIIIIIIIIII!!! WOW MUCH NEWS!'
+
+newsMessage = 'Holly Shit! \nΝέα Ανακοίνωση στο εξτρα φοβερό ιστότοπο της εξτρα φοβερής σχολής μας. \nΚαι σας ακούω να ρωτάτε: Ποιό είναι το θέμα της; Ε ΠΑΡΤΟ:\n'
 
 
 @client.event
 async def on_ready():  # method expected by client. This runs once when connected
     print(f'We have logged in as {client.user}')  # notification of login.
+    monitor_webpage()
 
 
-@client.event
-async def on_message(message):  # event that happens per any message.
-    if str(message.author) != str(client.user):
-        await message.channel.send('Ναι! v2')
+async def sendMessage():
+    messageToSend = newsMessage + newLast
+    await client.send_message()
+
+
+async def monitor_webpage():
+    #Generate fake user agent so we dont get banned
+    userAgent = UserAgent(100, Popularity.POPULAR.value)
+    global curLast
+
+    #Check every hour or so
+    while(True):
+        header = userAgent.get_random_user_agent()
+
+        # Get the html from the website
+        response = requests.get(url, header)
+
+        # Parse the html so we can easily search it
+        soup = bs.BeautifulSoup(response.text, 'lxml')
+
+        # Get the most recent news title in the parsed html format
+        for c in soup.find_all('div'):
+            item = c.get('class')
+            if item != None:
+                if item[0] == 'news-list-item':
+                    newLast = c.find('a').get('title')
+                    break
+
+        #Are new and cur news titles different?
+        if curLast != newLast:
+            sendMessage()
+            curLast = newLast
+        time.sleep(sleepTime)
 
 
 client.run(token)
