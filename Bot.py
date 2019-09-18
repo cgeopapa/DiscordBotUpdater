@@ -56,7 +56,7 @@ async def monitor_webpage():
         #Are new and cur news titles different?
         if curLast != newLast:
             messageToSend = newsMessage + newLast
-            await client.send_message(messageToSend)
+            await client.get_channel(622867078839402525).send(messageToSend)
             curLast = newLast
         time.sleep(sleepTime)
 
