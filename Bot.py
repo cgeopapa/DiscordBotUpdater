@@ -40,7 +40,7 @@ async def monitor_webpage():
     while(True):
         header = userAgent.get_random_user_agent()
 
-        # await channel.send(f'>>> Time to check for updates with user agent: {str(header)}')
+        await channel.send(f'>>> Time to check for updates with user agent: {str(header)}')
 
         # Get the html from the website
         response = requests.get(url, header)
