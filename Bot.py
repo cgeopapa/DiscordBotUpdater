@@ -25,6 +25,8 @@ newsMessage = '>>> **!!Holly Shit!!** \nΝέα Ανακοίνωση στο εξ�
 
 @client.event
 async def on_ready():  # method expected by client. This runs once when connected
+    global channel
+    channel = client.get_channel(622867078839402525)
     print(f'We have logged in as {client.user}')  # notification of login.
 
 
@@ -38,6 +40,8 @@ async def monitor_webpage():
     #Check every hour or so
     while(True):
         header = userAgent.get_random_user_agent()
+
+        await channel.send(f'Time to check for updates with user agent: {str(header)}')
 
         # Get the html from the website
         response = requests.get(url, header)
@@ -55,8 +59,10 @@ async def monitor_webpage():
                     if curLast != newLast:
                         link = 'http://www.phys.uoa.gr/' + c.find('a').get('href')
                         messageToSend = f'{newsMessage}*{newLast}* \n{link}'
-                        await client.get_channel(622867078839402525).send(messageToSend)
+                        await channel.send(messageToSend)
                         curLast = newLast
+                    else:
+                        await channel.send(f'Checked and found this title: {newLast}.\nIt isnt new.')
                     break
 
         time.sleep(sleepTime)
