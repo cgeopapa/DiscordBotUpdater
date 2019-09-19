@@ -18,7 +18,7 @@ token = 'NjIzNTQyNDA1MjgyMzk4MjA4.XYD9SQ.piOfXayZS1qyjyO96Ir2XyTA4v8'
 client = discord.Client()  # starts the discord client.
 url = 'http://www.phys.uoa.gr/grammateia.html'
 sleepTime = 3600
-curLast = 'ΑΝΑΚΟΙΝΩΣΗ ΓΙΑ ΤΟΥΣ ΝΕΟΕΙΣΑΧΘΕΝΤΕΣ ΦΟΙΤΗΤΕΣ ΑΚΑΔ. ΕΤΟΥΣ 2019-2020'
+curLast = 'init'
 
 newsMessage = '>>> **!!Holly Shit!!** \nΝέα Ανακοίνωση στο εξτρα φοβερό ιστότοπο της εξτρα φοβερής σχολής μας. \nΚαι σας ακούω να ρωτάτε: *Ποιό είναι το θέμα της;* Ε ΠΑΡΤΟ:\n\n'
 
@@ -40,7 +40,7 @@ async def monitor_webpage():
     while(True):
         header = userAgent.get_random_user_agent()
 
-        await channel.send(f'>>> Time to check for updates with user agent: {str(header)}')
+        # await channel.send(f'>>> Time to check for updates with user agent: {str(header)}')
 
         # Get the html from the website
         response = requests.get(url, header)
@@ -50,25 +50,25 @@ async def monitor_webpage():
 
         # Get the most recent news title in the parsed html format
         first = True
+        newsList = []
         for c in soup.find_all('div', class_='news-list-item'):
-            newLast = c.find('a').get('title')      #We got the latest news title
-            # Are new and cur news titles different?
-            if curLast == 'init':
-                curLast = newLast
-                break
+            newLast = (c.find('a').get('title'), c.find('a').get('href'))
 
-            if curLast != newLast:
-                if first:                      #If this is the first headline we found
-                    comingUpCur = newLast
-                    first = False
-                link = 'http://www.phys.uoa.gr/' + c.find('a').get('href')
-                messageToSend = f'{newsMessage}*{newLast}* \n{link}'
-                await channel.send(messageToSend)
-            elif first:
-                await channel.send(f'>>> Checked and found this title: {newLast}.\nIt isnt new.')
-            else:
-                curLast = comingUpCur
+            if curLast == 'init':
+                curLast = newLast      #We got the latest news title
+                print(f'Initialized with {curLast}')
                 break
+            else:
+                if curLast == newLast:
+                    print('This has been shown before')
+                    break
+                else:
+                    newsList.append(newLast)
+
+        if len(newsList) > 0:
+            for new in newsList:
+                await channel.send(f'{newsMessage}*{new[0]}*\nhttp://www.phys.uoa.gr/{new[1]}')
+
 
         time.sleep(sleepTime)
 
