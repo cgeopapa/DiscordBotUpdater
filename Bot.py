@@ -18,7 +18,7 @@ token = 'NjIzNTQyNDA1MjgyMzk4MjA4.XYD9SQ.piOfXayZS1qyjyO96Ir2XyTA4v8'
 client = discord.Client()  # starts the discord client.
 url = 'http://www.phys.uoa.gr/grammateia.html'
 sleepTime = 3600
-curLast = 'Super Anakoinvsara!!!!!!! Simantiki deite tin OLOIIIIIIIIIII!!! WOW MUCH NEWS!'
+curLast = 'ΑΝΑΚΟΙΝΩΣΗ ΓΙΑ ΤΟΥΣ ΝΕΟΕΙΣΑΧΘΕΝΤΕΣ ΦΟΙΤΗΤΕΣ ΑΚΑΔ. ΕΤΟΥΣ 2019-2020'
 
 newsMessage = '>>> **!!Holly Shit!!** \nΝέα Ανακοίνωση στο εξτρα φοβερό ιστότοπο της εξτρα φοβερής σχολής μας. \nΚαι σας ακούω να ρωτάτε: *Ποιό είναι το θέμα της;* Ε ΠΑΡΤΟ:\n\n'
 
@@ -40,7 +40,7 @@ async def monitor_webpage():
     while(True):
         header = userAgent.get_random_user_agent()
 
-        await channel.send(f'>>> Time to check for updates with user agent: {str(header)}')
+        # await channel.send(f'>>> Time to check for updates with user agent: {str(header)}')
 
         # Get the html from the website
         response = requests.get(url, header)
@@ -49,22 +49,29 @@ async def monitor_webpage():
         soup = bs.BeautifulSoup(response.text, 'lxml')
 
         # Get the most recent news title in the parsed html format
-        for c in soup.find_all('div'):
-            item = c.get('class')
-            if item != None:
-                if item[0] == 'news-list-item':
-                    newLast = c.find('a').get('title')
-                    # Are new and cur news titles different?
-                    if curLast != newLast:
-                        link = 'http://www.phys.uoa.gr/' + c.find('a').get('href')
-                        messageToSend = f'{newsMessage}*{newLast}* \n{link}'
-                        await channel.send(messageToSend)
-                        curLast = newLast
-                    else:
-                        await channel.send(f'>>> Checked and found this title: {newLast}.\nIt isnt new.')
-                    break
+        first = True
+        for c in soup.find_all('div', class_='news-list-item'):
+            newLast = c.find('a').get('title')      #We got the latest news title
+            # Are new and cur news titles different?
+            if curLast == 'init':
+                curLast = newLast
+                break
+
+            if curLast != newLast:
+                if first:                      #If this is the first headline we found
+                    comingUpCur = newLast
+                    first = False
+                link = 'http://www.phys.uoa.gr/' + c.find('a').get('href')
+                messageToSend = f'{newsMessage}*{newLast}* \n{link}'
+                await channel.send(messageToSend)
+            elif first:
+                await channel.send(f'>>> Checked and found this title: {newLast}.\nIt isnt new.')
+            else:
+                curLast = comingUpCur
+                break
 
         time.sleep(sleepTime)
+
 
 client.loop.create_task(monitor_webpage())
 client.run(token)
