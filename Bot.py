@@ -40,7 +40,7 @@ async def monitor_webpage():
     while(True):
         header = userAgent.get_random_user_agent()
 
-        # await channel.send(f'>>> Time to check for updates with user agent: {str(header)}')
+        print(f'>>> Time to check for updates with user agent: {str(header)}')
 
         # Get the html from the website
         response = requests.get(url, header)
@@ -69,8 +69,6 @@ async def monitor_webpage():
             for new in newsList:
                 await channel.send(f'{newsMessage}*{new[0]}*\nhttp://www.phys.uoa.gr/{new[1]}')
             curLast = newsList[0]
-
-
         time.sleep(sleepTime)
 
 
