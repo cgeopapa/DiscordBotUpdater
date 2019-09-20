@@ -14,7 +14,7 @@ from random_user_agent.params import Popularity
 import bs4 as bs
 import lxml
 
-token = 'NjIzNTQyNDA1MjgyMzk4MjA4.XYD9SQ.piOfXayZS1qyjyO96Ir2XyTA4v8'
+token = 'NjIzNTQyNDA1MjgyMzk4MjA4.XYTdKA.JEN_RW_OYstum-itXM7SVRydxpA'
 client = discord.Client()  # starts the discord client.
 url = 'http://www.phys.uoa.gr/grammateia.html'
 sleepTime = 3600
