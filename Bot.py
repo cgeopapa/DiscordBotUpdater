@@ -69,6 +69,7 @@ async def monitor_webpage():
             for new in newsList:
                 await channel.send(f'{newsMessage}*{new[0]}*\nhttp://www.phys.uoa.gr/{new[1]}')
             curLast = newsList[0]
+        response.close()
         time.sleep(sleepTime)
 
 
