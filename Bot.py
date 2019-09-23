@@ -49,7 +49,6 @@ async def monitor_webpage():
         soup = bs.BeautifulSoup(response.text, 'lxml')
 
         # Get the most recent news title in the parsed html format
-        first = True
         newsList = []
         for c in soup.find_all('div', class_='news-list-item'):
             newLast = (c.find('a').get('title'), c.find('a').get('href'))
