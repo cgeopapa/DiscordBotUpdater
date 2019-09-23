@@ -17,7 +17,7 @@ import lxml
 token = 'NjIzNTQyNDA1MjgyMzk4MjA4.XYTdKA.JEN_RW_OYstum-itXM7SVRydxpA'
 client = discord.Client()  # starts the discord client.
 url = 'http://www.phys.uoa.gr/grammateia.html'
-sleepTime = 3600
+sleepTime = 60
 curLast = 'init'
 
 newsMessage = '>>> **!!Holly Shit!!** \nΝέα Ανακοίνωση στο εξτρα φοβερό ιστότοπο της εξτρα φοβερής σχολής μας. \nΚαι σας ακούω να ρωτάτε: *Ποιό είναι το θέμα της;* Ε ΠΑΡΤΟ:\n\n'
