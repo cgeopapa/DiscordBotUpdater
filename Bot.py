@@ -1,11 +1,3 @@
-#   id: 623542405282398208
-#   token: NjIzNTQyNDA1MjgyMzk4MjA4.XYD9SQ.piOfXayZS1qyjyO96Ir2XyTA4v8
-#   permissions: 67584
-#
-#   url: https://discordapp.com/oauth2/authorize?client_id=623542405282398208&scope=bot&permissions=67584
-#
-#   site: http://www.phys.uoa.gr/grammateia.html
-
 import discord
 import requests
 import time
@@ -13,8 +5,8 @@ from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import Popularity
 import bs4 as bs
 import lxml
+from os import environ;
 
-token = 'NjIzNTQyNDA1MjgyMzk4MjA4.XYTdKA.JEN_RW_OYstum-itXM7SVRydxpA'
 client = discord.Client()  # starts the discord client.
 url = 'http://www.phys.uoa.gr/grammateia.html'
 sleepTime = 3600
@@ -73,4 +65,4 @@ async def monitor_webpage():
 
 
 client.loop.create_task(monitor_webpage())
-client.run(token)
+client.run(environ['token'])
