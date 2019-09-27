@@ -65,5 +65,4 @@ async def monitor_webpage():
 
 
 client.loop.create_task(monitor_webpage())
-print(environ['token'])
-client.run(str(environ['token']))
+client.run(environ['token'])
